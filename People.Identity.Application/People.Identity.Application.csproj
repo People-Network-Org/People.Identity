@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RestoreSources>$(RestoreSources);../../People.Shared/bin/Release;https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\People.Identity.Domain\People.Identity.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="People.Shared" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>

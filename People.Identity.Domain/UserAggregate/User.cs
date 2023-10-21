@@ -1,0 +1,72 @@
+using Microsoft.AspNetCore.Identity;
+
+using People.Identity.Domain.Common.Models;
+using People.Identity.Domain.UserAggregate.Events;
+using People.Identity.Domain.UserAggregate.ValueObjects;
+
+namespace People.Identity.Domain.UserAggregate;
+
+public sealed class User : AggregateRoot<UserId>
+{
+  public string FirstName { get; private set; }
+  public string LastName { get; private set; }
+  public string NickName { get; private set; }
+  public string Email { get; private set; }
+  public string? Phone { get; private set; }
+  public string PasswordHash { get; private set; }
+
+  public DateTime CreatedDateTime { get; private set; }
+  public DateTime UpdatedDateTime { get; private set; }
+
+  private User(
+      UserId userId,
+      string firstName,
+      string lastName,
+      string nickName,
+      string email,
+      string? phone,
+      string passwordHash,
+      DateTime createdDateTime,
+      DateTime updatedDateTime) : base(userId)
+  {
+    FirstName = firstName;
+    LastName = lastName;
+    NickName = nickName;
+    Email = email;
+    Phone = phone;
+    PasswordHash = passwordHash;
+    CreatedDateTime = createdDateTime;
+    UpdatedDateTime = updatedDateTime;
+  }
+
+  public static User Create(
+      string firstName,
+      string lastName,
+      string nickName,
+      string email,
+      string? phone,
+      string password)
+  {
+    var passwordHash = new PasswordHasher<User>().HashPassword(null!, password);
+    var user = new User(
+        UserId.CreateUnique(),
+        firstName,
+        lastName,
+        nickName,
+        email,
+        phone,
+        passwordHash,
+        DateTime.UtcNow,
+        DateTime.UtcNow);
+
+    user.AddDomainEvent(new UserCreated(user));
+
+    return user;
+  }
+
+#pragma warning disable CS8618
+  private User()
+  {
+  }
+#pragma warning restore CS8618
+}

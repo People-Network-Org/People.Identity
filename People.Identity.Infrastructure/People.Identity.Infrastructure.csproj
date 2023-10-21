@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RestoreSources>$(RestoreSources);../../People.Shared/bin/Release;https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\People.Identity.Application\People.Identity.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.1.1" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+    <PackageReference Include="People.Shared" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
