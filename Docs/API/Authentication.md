@@ -7,25 +7,25 @@
 
 ```json
 {
-  email: string,
-  password: string
+  "email": "string",
+  "password": "string"
 }
 ```
 
 **Result:**
 
 ```json
-  {
-  id: string,
-  firstName: string,
-  lastName?: string,
-  nickName: string,
-  email: string,
-  emailConfirmed: boolean,
-  phone?: string,
-  phoneConfirmed: boolean,
-  token: string,
-  refreshToken: string
+{
+  "id": "string",
+  "firstName": "string",
+  "lastName": "string | undefined",
+  "nickName": "string",
+  "email": "string",
+  "emailConfirmed": "boolean",
+  "phone": "string | undefined",
+  "phoneConfirmed": "boolean",
+  "token": "string",
+  "refreshToken": "string"
 }
 ```
 
@@ -36,27 +36,27 @@
 
 ```json
 {
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
+  "firstName": "string",
+  "lastName": "string",
+  "email": "string",
+  "password": "string"
 }
 ```
 
 **Result:**
 
 ```json
-  {
-  id: string,
-  firstName: string,
-  lastName?: string,
-  nickName: string,
-  email: string,
-  emailConfirmed: boolean,
-  phone?: string,
-  phoneConfirmed: boolean,
-  token: string,
-  refreshToken: string
+{
+  "id": "string",
+  "firstName": "string",
+  "lastName": "string | undefined",
+  "nickName": "string",
+  "email": "string",
+  "emailConfirmed": "boolean",
+  "phone": "string | undefined",
+  "phoneConfirmed": "boolean",
+  "token": "string",
+  "refreshToken": "string"
 }
 ```
 
@@ -67,7 +67,7 @@
 
 ```json
 {
-  token: string
+  "token": "string"
 }
 ```
 
@@ -75,8 +75,8 @@
 
 ```json
 {
-  token: string,
-  refreshToken: string
+  "token": "string",
+  "refreshToken": "string"
 }
 ```
 
@@ -86,10 +86,10 @@ Any errors will result:
 
 ```json
 {
-  type: string,
-  title: string,
-  status: int,
-  traceId: string,
-  errorCodes: string[]
+  "type": "string",
+  "title": "string",
+  "status": "int",
+  "traceId": "string",
+  "errorCodes": "string[]"
 }
 ```
