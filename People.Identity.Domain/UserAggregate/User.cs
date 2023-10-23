@@ -1,19 +1,28 @@
 using Microsoft.AspNetCore.Identity;
 
 using People.Identity.Domain.Common.Models;
+using People.Identity.Domain.UserAggregate.Entities;
 using People.Identity.Domain.UserAggregate.Events;
 using People.Identity.Domain.UserAggregate.ValueObjects;
 
 namespace People.Identity.Domain.UserAggregate;
 
-public sealed class User : AggregateRoot<UserId>
+public sealed class User : AggregateRoot<UserId, Guid>
 {
+  private readonly List<UserClaim> _claims = new();
+  private readonly List<UserRole> _roles = new();
+  private readonly List<RefreshToken> _refreshTokens = new();
+
   public string FirstName { get; private set; }
   public string LastName { get; private set; }
   public string NickName { get; private set; }
   public string Email { get; private set; }
   public string? Phone { get; private set; }
   public string PasswordHash { get; private set; }
+
+  public IReadOnlyList<UserClaim> Claims => _claims.ToList().AsReadOnly();
+  public IReadOnlyList<UserRole> Roles => _roles.ToList().AsReadOnly();
+  public IReadOnlyList<RefreshToken> RefreshTokens => _refreshTokens.ToList().AsReadOnly();
 
   public DateTime CreatedDateTime { get; private set; }
   public DateTime UpdatedDateTime { get; private set; }
@@ -62,6 +71,26 @@ public sealed class User : AggregateRoot<UserId>
     user.AddDomainEvent(new UserCreated(user));
 
     return user;
+  }
+
+  public void AddClaim(UserClaim claim)
+  {
+    _claims.Add(claim);
+  }
+
+  public void AddRole(UserRole role)
+  {
+    _roles.Add(role);
+  }
+
+  public void AddRefreshToken(RefreshToken refreshToken)
+  {
+    _refreshTokens.Add(refreshToken);
+  }
+
+  public void RemoveRefreshToken(RefreshToken refreshToken)
+  {
+    _refreshTokens.Remove(refreshToken);
   }
 
 #pragma warning disable CS8618

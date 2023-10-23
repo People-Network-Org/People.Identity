@@ -2,23 +2,23 @@ using People.Identity.Domain.Common.Models;
 
 namespace People.Identity.Domain.UserAggregate.ValueObjects;
 
-public class RoleId : ValueObject
+public class UserClaimId : ValueObject
 {
   public Guid Value { get; }
 
-  private RoleId(Guid value)
+  private UserClaimId(Guid value)
   {
     Value = value;
   }
 
-  public static RoleId CreateUnique()
+  public static UserClaimId CreateUnique()
   {
     return new(Guid.NewGuid());
   }
 
-  public static RoleId Create(Guid value)
+  public static UserClaimId Create(Guid value)
   {
-    return new RoleId(value);
+    return new UserClaimId(value);
   }
 
   public override IEnumerable<object> GetEqualityComponents()

@@ -2,11 +2,14 @@ using ErrorOr;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Identity;
+
 using People.Identity.Application.Authentication.Common;
 using People.Identity.Application.Common.Interfaces.Authentication;
 using People.Identity.Application.Common.Interfaces.Persistence;
 using People.Identity.Domain.Common.Errors;
 using People.Identity.Domain.UserAggregate;
+using People.Identity.Domain.UserAggregate.Entities;
 
 namespace People.Identity.Application.Authentication.Queries.Login;
 
@@ -28,11 +31,16 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
     if (_userRepository.GetUserByEmail(query.Email) is not User user)
       return Errors.Authentication.InvalidCredentials;
 
-    if (user.Password != query.Password)
+    var passwordHash = new PasswordHasher<User>().HashPassword(null!, query.Password);
+
+    if (user.PasswordHash != passwordHash)
       return Errors.Authentication.InvalidCredentials;
 
     var token = _jwtTokenGenerator.GenerateToken(user);
+    var refreshToken = RefreshToken.Create(null, null);
+    user.AddRefreshToken(refreshToken);
+    _userRepository.Update(user);
 
-    return new AuthenticationResult(user, token);
+    return new AuthenticationResult(user, token, refreshToken.Id.Value);
   }
 }

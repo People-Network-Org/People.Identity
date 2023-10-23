@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using People.Identity.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using People.Identity.Infrastructure.Persistence;
 namespace People.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    partial class IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231022182436_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,34 +78,7 @@ namespace People.Identity.Infrastructure.Migrations
 
             modelBuilder.Entity("People.Identity.Domain.UserAggregate.User", b =>
                 {
-                    b.OwnsMany("People.Identity.Domain.UserAggregate.User.Claims#People.Identity.Domain.UserAggregate.Entities.UserClaim", "Claims", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("UserClaimId");
-
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Type")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.HasKey("Id", "UserId");
-
-                            b1.HasIndex("UserId");
-
-                            b1.ToTable("UserClaims", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsMany("People.Identity.Domain.UserAggregate.User.RefreshTokens#People.Identity.Domain.UserAggregate.Entities.RefreshToken", "RefreshTokens", b1 =>
+                    b.OwnsMany("People.Identity.Domain.UserAggregate.Entities.RefreshToken", "RefreshTokens", b1 =>
                         {
                             b1.Property<string>("Id")
                                 .HasColumnType("text")
@@ -130,7 +106,34 @@ namespace People.Identity.Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsMany("People.Identity.Domain.UserAggregate.User.Roles#People.Identity.Domain.UserAggregate.Entities.UserRole", "Roles", b1 =>
+                    b.OwnsMany("People.Identity.Domain.UserAggregate.Entities.UserClaim", "Claims", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
+                                .HasColumnName("UserClaimId");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("Id", "UserId");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("UserClaims", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsMany("People.Identity.Domain.UserAggregate.Entities.UserRole", "Roles", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")

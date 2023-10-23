@@ -7,6 +7,7 @@ using People.Identity.Application.Common.Interfaces.Authentication;
 using People.Identity.Application.Common.Interfaces.Persistence;
 using People.Identity.Domain.Common.Errors;
 using People.Identity.Domain.UserAggregate;
+using People.Identity.Domain.UserAggregate.Entities;
 
 namespace People.Identity.Application.Authentication.Commands.Register;
 
@@ -38,7 +39,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
 
     _userRepository.Add(user);
 
+    var refreshToken = RefreshToken.Create(null, null);
+    user.AddRefreshToken(refreshToken);
+    _userRepository.Update(user);
+
     var token = _jwtTokenGenerator.GenerateToken(user);
-    return new AuthenticationResult(user, token);
+    return new AuthenticationResult(user, token, refreshToken.Id.Value);
   }
 }
