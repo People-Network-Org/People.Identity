@@ -1,5 +1,4 @@
 using People.Identity.Application.Common.Interfaces.Persistence;
-using People.Identity.Domain.Common.Models;
 using People.Identity.Domain.UserAggregate;
 using People.Identity.Domain.UserAggregate.ValueObjects;
 
@@ -36,9 +35,8 @@ public class UserRepository : IUserRepository
     return _dbContext.Users.Where(u => u.RefreshTokens.Any(rt => rt.Id == RefreshTokenId.Create(refreshToken))).FirstOrDefault();
   }
 
-  public User? GetById(string id)
+  public User? GetById(UserId id)
   {
-    var guid = Guid.Parse(id);
-    return _dbContext.Users.FirstOrDefault(u => u.Id == UserId.Create(guid));
+    return _dbContext.Users.FirstOrDefault(u => u.Id == id);
   }
 }

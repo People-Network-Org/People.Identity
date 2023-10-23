@@ -93,6 +93,16 @@ public sealed class User : AggregateRoot<UserId, Guid>
     _refreshTokens.Remove(refreshToken);
   }
 
+  public void RemoveClaim(UserClaim claim)
+  {
+    _claims.Remove(claim);
+  }
+
+  public void RemoveRole(UserRole role)
+  {
+    _roles.Remove(role);
+  }
+
 #pragma warning disable CS8618
   private User()
   {

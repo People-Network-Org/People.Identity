@@ -32,9 +32,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
       return Errors.Authentication.InvalidCredentials;
 
     var verifiedHash = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, query.Password);
-    // var passwordHash = new PasswordHasher<User>().HashPassword(user, query.Password);
 
-    // if (user.PasswordHash != passwordHash)
     if (verifiedHash == PasswordVerificationResult.Failed)
       return Errors.Authentication.InvalidCredentials;
 

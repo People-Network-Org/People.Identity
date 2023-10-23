@@ -16,6 +16,7 @@ using People.Identity.Application.Common.Interfaces.Persistence;
 using People.Identity.Infrastructure.Authentication;
 using People.Identity.Infrastructure.MassTransit;
 using People.Identity.Infrastructure.Persistence;
+using People.Identity.Infrastructure.Persistence.Consumers;
 using People.Identity.Infrastructure.Persistence.Interceptors;
 using People.Identity.Infrastructure.Persistence.Repositories;
 
@@ -45,12 +46,30 @@ public static class DependencyInjection
 
     services.AddMassTransit(x =>
     {
+      x.SetEndpointNameFormatter(new DefaultEndpointNameFormatter(true));
+
+      x.AddConsumer<UserConsumer>().Endpoint(cfg =>
+      {
+        cfg.ConcurrentMessageLimit = 10;
+      });
+
       x.UsingRabbitMq((context, cfg) =>
       {
         cfg.Host(massTransitSettings.Host, "/", h =>
         {
           h.Username(massTransitSettings.Username);
           h.Password(massTransitSettings.Password);
+        });
+
+        cfg.UseDelayedRedelivery(r => r.Intervals(
+          new[] { 5, 15, 30 }.Select(t => TimeSpan.FromMinutes(t)).ToArray()
+        ));
+        cfg.UseMessageRetry(r =>
+        {
+          r.Intervals(
+            new[] { 5, 20, 60 }.Select(t => TimeSpan.FromSeconds(t)).ToArray()
+          );
+          r.Ignore<ArgumentNullException>();
         });
 
         cfg.ConfigureEndpoints(context);
