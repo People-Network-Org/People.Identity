@@ -31,9 +31,11 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
     if (_userRepository.GetUserByEmail(query.Email) is not User user)
       return Errors.Authentication.InvalidCredentials;
 
-    var passwordHash = new PasswordHasher<User>().HashPassword(null!, query.Password);
+    var verifiedHash = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, query.Password);
+    // var passwordHash = new PasswordHasher<User>().HashPassword(user, query.Password);
 
-    if (user.PasswordHash != passwordHash)
+    // if (user.PasswordHash != passwordHash)
+    if (verifiedHash == PasswordVerificationResult.Failed)
       return Errors.Authentication.InvalidCredentials;
 
     var token = _jwtTokenGenerator.GenerateToken(user);
