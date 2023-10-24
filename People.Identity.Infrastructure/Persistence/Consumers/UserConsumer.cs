@@ -1,6 +1,13 @@
+using MapsterMapper;
+
 using MassTransit;
 
+using MediatR;
+
 using People.Identity.Application.Common.Interfaces.Persistence;
+using People.Identity.Application.UserMediatR.Commands.AddClaim;
+using People.Identity.Application.UserMediatR.Commands.AddRole;
+using People.Identity.Application.UserMediatR.Commands.RemoveClaim;
 using People.Identity.Domain.UserAggregate;
 using People.Identity.Domain.UserAggregate.Entities;
 using People.Identity.Domain.UserAggregate.ValueObjects;
@@ -15,99 +22,37 @@ public class UserConsumer :
   IConsumer<RemoveRoleFromUser>
 {
   private readonly IUserRepository _userRepository;
+  private readonly IMapper _mapper;
+  private readonly ISender _mediator;
 
-  public UserConsumer(IUserRepository userRepository)
+  public UserConsumer(IUserRepository userRepository, IMapper mapper, ISender mediator)
   {
     _userRepository = userRepository;
+    _mapper = mapper;
+    _mediator = mediator;
   }
 
   public async Task Consume(ConsumeContext<AddClaimToUser> context)
   {
-    await Task.CompletedTask;
-
-    if (GetUserById(context.Message.Id) is not User user)
-    {
-      return;
-    }
-    if (GetUserClaim(user, context.Message.Type, context.Message.Value) is not null)
-    {
-      return;
-    }
-
-    var claim = UserClaim.Create(context.Message.Type, context.Message.Value);
-    user.AddClaim(claim);
-
-    _userRepository.Update(user);
+    var command = _mapper.Map<AddClaimCommand>(context.Message);
+    var result = await _mediator.Send(command);
   }
 
   public async Task Consume(ConsumeContext<RemoveClaimFromUser> context)
   {
-    await Task.CompletedTask;
-
-    if (GetUserById(context.Message.Id) is not User user)
-    {
-      return;
-    }
-
-    if (GetUserClaim(user, context.Message.Type, context.Message.Value) is UserClaim claim)
-    {
-      user.RemoveClaim(claim);
-    }
-
-    _userRepository.Update(user);
-  }
-
-  private UserClaim? GetUserClaim(User user, string type, string value)
-  {
-    return user.Claims.FirstOrDefault(c =>
-      c.Type == type &&
-      c.Value == value);
+    var command = _mapper.Map<RemoveClaimCommand>(context.Message);
+    var result = await _mediator.Send(command);
   }
 
   public async Task Consume(ConsumeContext<AddRoleToUser> context)
   {
-    await Task.CompletedTask;
-
-    if (GetUserById(context.Message.Id) is not User user)
-    {
-      return;
-    }
-
-    if (GetUserRole(user, context.Message.Role) is not null)
-    {
-      return;
-    }
-
-    var role = UserRole.Create(context.Message.Role);
-    user.AddRole(role);
-
-    _userRepository.Update(user);
+    var command = _mapper.Map<AddRoleCommand>(context.Message);
+    var result = await _mediator.Send(command);
   }
 
   public async Task Consume(ConsumeContext<RemoveRoleFromUser> context)
   {
-    await Task.CompletedTask;
-
-    if (GetUserById(context.Message.Id) is not User user)
-    {
-      return;
-    }
-
-    if (GetUserRole(user, context.Message.Role) is UserRole role)
-    {
-      user.RemoveRole(role);
-    }
-
-    _userRepository.Update(user);
-  }
-
-  private UserRole? GetUserRole(User user, string role)
-  {
-    return user.Roles.FirstOrDefault(r => r.NormalizedName == role.ToUpper());
-  }
-
-  private User? GetUserById(Guid id)
-  {
-    return _userRepository.GetById(UserId.Create(id));
+    var command = _mapper.Map<RemoveRoleFromUser>(context.Message);
+    var result = await _mediator.Send(command);
   }
 }
