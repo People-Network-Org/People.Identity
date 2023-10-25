@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+
 using MapsterMapper;
 
 using MediatR;
@@ -9,12 +11,15 @@ using People.Identity.Application.Authentication.Commands.Refresh;
 using People.Identity.Application.Authentication.Commands.Register;
 using People.Identity.Application.Authentication.Queries.Login;
 using People.Identity.Application.Common.Interfaces.Persistence;
+using People.Identity.Application.UserMediatR.Queries;
 using People.Identity.Contracts.Authentication;
+using People.Identity.Contracts.User;
+using People.Identity.Domain.Common.Errors;
+using People.Identity.Domain.UserAggregate.ValueObjects;
 
 namespace People.Identity.Api.Controllers;
 
 [Route("/auth")]
-[AllowAnonymous]
 public class AuthenticationController : ApiController
 {
   private readonly ISender _mediator;
@@ -27,6 +32,7 @@ public class AuthenticationController : ApiController
   }
 
   [HttpPost("register")]
+  [AllowAnonymous]
   public async Task<IActionResult> Register(RegisterRequest request)
   {
     var command = _mapper.Map<RegisterCommand>(request);
@@ -39,6 +45,7 @@ public class AuthenticationController : ApiController
   }
 
   [HttpPost("login")]
+  [AllowAnonymous]
   public async Task<IActionResult> Login(LoginRequest request)
   {
     var command = _mapper.Map<LoginQuery>(request);
@@ -51,6 +58,7 @@ public class AuthenticationController : ApiController
   }
 
   [HttpPost("refresh")]
+  [AllowAnonymous]
   public async Task<IActionResult> Refresh(RefreshRequest request)
   {
     var command = _mapper.Map<RefreshCommand>(request);
@@ -58,6 +66,29 @@ public class AuthenticationController : ApiController
 
     return authResult.Match(
       result => Ok(_mapper.Map<RefreshResponse>(result)),
+      Problem
+    );
+  }
+
+  [HttpGet("me")]
+  public async Task<IActionResult> Me()
+  {
+    var idClaim = HttpContext.User.Claims.FirstOrDefault(c =>
+      c.Type == JwtSecurityTokenHandler.DefaultInboundClaimTypeMap[JwtRegisteredClaimNames.Sub]);
+
+    var notFoundProblem = new[] { Errors.User.UserNotFound }.ToList();
+    if (idClaim is null)
+      return Problem(notFoundProblem);
+
+    if (!Guid.TryParse(idClaim.Value, out Guid guid))
+      return Problem(notFoundProblem);
+
+    var userId = UserId.Create(guid);
+    var command = new UserQuery(userId);
+    var authResult = await _mediator.Send(command);
+
+    return authResult.Match(
+      result => Ok(_mapper.Map<UserResponse>(result)),
       Problem
     );
   }
