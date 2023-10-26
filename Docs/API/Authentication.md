@@ -21,9 +21,7 @@
   "lastName": "string | undefined",
   "nickName": "string",
   "email": "string",
-  "emailConfirmed": "boolean",
   "phone": "string | undefined",
-  "phoneConfirmed": "boolean",
   "token": "string",
   "refreshToken": "string"
 }
@@ -52,9 +50,7 @@
   "lastName": "string | undefined",
   "nickName": "string",
   "email": "string",
-  "emailConfirmed": "boolean",
   "phone": "string | undefined",
-  "phoneConfirmed": "boolean",
   "token": "string",
   "refreshToken": "string"
 }
@@ -67,7 +63,7 @@
 
 ```json
 {
-  "token": "string"
+  "refreshToken": "string"
 }
 ```
 
