@@ -12,13 +12,13 @@ using Microsoft.IdentityModel.Tokens;
 
 using People.Identity.Application.Common.Interfaces.Authentication;
 using People.Identity.Application.Common.Interfaces.MassTransit;
-using People.Identity.Application.Common.Interfaces.Persistence;
+using People.Identity.Application.Common.Interfaces.Persistance;
 using People.Identity.Infrastructure.Authentication;
 using People.Identity.Infrastructure.MassTransit;
-using People.Identity.Infrastructure.Persistence;
-using People.Identity.Infrastructure.Persistence.Consumers;
-using People.Identity.Infrastructure.Persistence.Interceptors;
-using People.Identity.Infrastructure.Persistence.Repositories;
+using People.Identity.Infrastructure.Persistance;
+using People.Identity.Infrastructure.Persistance.Consumers;
+using People.Identity.Infrastructure.Persistance.Interceptors;
+using People.Identity.Infrastructure.Persistance.Repositories;
 
 namespace People.Identity.Infrastructure;
 

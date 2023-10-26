@@ -4,16 +4,12 @@ using MassTransit;
 
 using MediatR;
 
-using People.Identity.Application.Common.Interfaces.Persistence;
 using People.Identity.Application.UserMediatR.Commands.AddClaim;
 using People.Identity.Application.UserMediatR.Commands.AddRole;
 using People.Identity.Application.UserMediatR.Commands.RemoveClaim;
-using People.Identity.Domain.UserAggregate;
-using People.Identity.Domain.UserAggregate.Entities;
-using People.Identity.Domain.UserAggregate.ValueObjects;
 using People.Shared.AMQP.Tasks;
 
-namespace People.Identity.Infrastructure.Persistence.Consumers;
+namespace People.Identity.Infrastructure.Persistance.Consumers;
 
 public class UserConsumer :
   IConsumer<AddClaimToUser>,
@@ -21,13 +17,11 @@ public class UserConsumer :
   IConsumer<AddRoleToUser>,
   IConsumer<RemoveRoleFromUser>
 {
-  private readonly IUserRepository _userRepository;
   private readonly IMapper _mapper;
   private readonly ISender _mediator;
 
-  public UserConsumer(IUserRepository userRepository, IMapper mapper, ISender mediator)
+  public UserConsumer(IMapper mapper, ISender mediator)
   {
-    _userRepository = userRepository;
     _mapper = mapper;
     _mediator = mediator;
   }

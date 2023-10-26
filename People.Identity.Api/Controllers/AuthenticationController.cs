@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using People.Identity.Application.Authentication.Commands.Refresh;
 using People.Identity.Application.Authentication.Commands.Register;
 using People.Identity.Application.Authentication.Queries.Login;
-using People.Identity.Application.Common.Interfaces.Persistence;
+using People.Identity.Application.Common.Interfaces.Persistance;
 using People.Identity.Application.UserMediatR.Queries;
 using People.Identity.Contracts.Authentication;
 using People.Identity.Contracts.User;

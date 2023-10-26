@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+
 using People.Identity.Api.Common.Errors;
 using People.Identity.Api.Common.Mapping;
 

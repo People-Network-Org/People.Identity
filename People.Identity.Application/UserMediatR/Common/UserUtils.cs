@@ -1,4 +1,4 @@
-using People.Identity.Application.Common.Interfaces.Persistence;
+using People.Identity.Application.Common.Interfaces.Persistance;
 using People.Identity.Domain.UserAggregate;
 using People.Identity.Domain.UserAggregate.Entities;
 using People.Identity.Domain.UserAggregate.ValueObjects;

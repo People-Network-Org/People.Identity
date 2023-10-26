@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 using People.Identity.Domain.Common.Models;
 
-namespace People.Identity.Infrastructure.Persistence.Interceptors;
+namespace People.Identity.Infrastructure.Persistance.Interceptors;
 
 public class PublishDomainEventsInterceptor : SaveChangesInterceptor
 {

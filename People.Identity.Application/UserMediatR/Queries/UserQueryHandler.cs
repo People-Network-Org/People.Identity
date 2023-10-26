@@ -2,7 +2,7 @@ using ErrorOr;
 
 using MediatR;
 
-using People.Identity.Application.Common.Interfaces.Persistence;
+using People.Identity.Application.Common.Interfaces.Persistance;
 using People.Identity.Application.UserMediatR.Common;
 using People.Identity.Domain.Common.Errors;
 using People.Identity.Domain.UserAggregate;

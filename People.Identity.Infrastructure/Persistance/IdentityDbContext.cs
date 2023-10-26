@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 using People.Identity.Domain.Common.Models;
 using People.Identity.Domain.UserAggregate;
-using People.Identity.Infrastructure.Persistence.Interceptors;
+using People.Identity.Infrastructure.Persistance.Interceptors;
 
-namespace People.Identity.Infrastructure.Persistence;
+namespace People.Identity.Infrastructure.Persistance;
 
 public class IdentityDbContext : DbContext
 {

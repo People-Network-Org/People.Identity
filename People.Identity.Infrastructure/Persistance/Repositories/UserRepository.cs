@@ -1,8 +1,8 @@
-using People.Identity.Application.Common.Interfaces.Persistence;
+using People.Identity.Application.Common.Interfaces.Persistance;
 using People.Identity.Domain.UserAggregate;
 using People.Identity.Domain.UserAggregate.ValueObjects;
 
-namespace People.Identity.Infrastructure.Persistence.Repositories;
+namespace People.Identity.Infrastructure.Persistance.Repositories;
 
 public class UserRepository : IUserRepository
 {

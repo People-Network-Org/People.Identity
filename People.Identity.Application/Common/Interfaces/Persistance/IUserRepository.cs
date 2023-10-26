@@ -1,7 +1,7 @@
 using People.Identity.Domain.UserAggregate;
 using People.Identity.Domain.UserAggregate.ValueObjects;
 
-namespace People.Identity.Application.Common.Interfaces.Persistence;
+namespace People.Identity.Application.Common.Interfaces.Persistance;
 
 public interface IUserRepository
 {

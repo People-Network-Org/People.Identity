@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using People.Identity.Domain.UserAggregate;
 using People.Identity.Domain.UserAggregate.ValueObjects;
 
-namespace People.Identity.Infrastructure.Persistence.Configurations;
+namespace People.Identity.Infrastructure.Persistance.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
