@@ -28,8 +28,12 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
   {
     await Task.CompletedTask;
 
-    if (_userRepository.GetUserByEmail(query.Email) is not User user)
+    if (_userRepository.GetUserByEmail(query.Email) is not User user
+      || !user.IsEmailConfirmed
+      || user.PasswordHash is null)
+    {
       return Errors.Authentication.InvalidCredentials;
+    }
 
     var verifiedHash = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, query.Password);
 

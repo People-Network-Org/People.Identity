@@ -7,10 +7,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using People.Identity.Application.Authentication.Commands.ConfirmEmail;
 using People.Identity.Application.Authentication.Commands.Refresh;
 using People.Identity.Application.Authentication.Commands.Register;
 using People.Identity.Application.Authentication.Queries.Login;
-using People.Identity.Application.UserMediatR.Queries;
+using People.Identity.Application.UserMediatR.Queries.ConfirmationUser;
+using People.Identity.Application.UserMediatR.Queries.UserById;
 using People.Identity.Contracts.Authentication;
 using People.Identity.Contracts.User;
 using People.Identity.Domain.Common.Errors;
@@ -30,15 +32,41 @@ public class AuthenticationController : ApiController
     _mapper = mapper;
   }
 
+  [HttpGet("confirm/{code}")]
+  [AllowAnonymous]
+  public async Task<IActionResult> GetConfirmationUser(string code)
+  {
+    var command = new ConfirmationUserQuery(code);
+    var userResult = await _mediator.Send(command);
+
+    return userResult.Match(
+      result => Ok(_mapper.Map<UserResponse>(result)),
+      Problem
+    );
+  }
+
+  [HttpPost("confirm")]
+  [AllowAnonymous]
+  public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest request)
+  {
+    var command = _mapper.Map<ConfirmEmailCommand>(request);
+    var authResult = await _mediator.Send(command);
+
+    return authResult.Match(
+      result => Ok(_mapper.Map<AuthenticationResponse>(result)),
+      Problem
+    );
+  }
+
   [HttpPost("register")]
   [AllowAnonymous]
   public async Task<IActionResult> Register(RegisterRequest request)
   {
     var command = _mapper.Map<RegisterCommand>(request);
-    var authResult = await _mediator.Send(command);
+    var userResult = await _mediator.Send(command);
 
-    return authResult.Match(
-      result => Ok(_mapper.Map<AuthenticationResponse>(result)),
+    return userResult.Match(
+      result => base.Ok(_mapper.Map<UserResponse>(result)),
       Problem
     );
   }
@@ -87,7 +115,7 @@ public class AuthenticationController : ApiController
     var authResult = await _mediator.Send(command);
 
     return authResult.Match(
-      result => Ok(_mapper.Map<UserResponse>(result)),
+      result => base.Ok(_mapper.Map<UserResponse>(result)),
       Problem
     );
   }

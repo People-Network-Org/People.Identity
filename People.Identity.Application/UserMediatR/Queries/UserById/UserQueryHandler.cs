@@ -7,7 +7,7 @@ using People.Identity.Application.UserMediatR.Common;
 using People.Identity.Domain.Common.Errors;
 using People.Identity.Domain.UserAggregate;
 
-namespace People.Identity.Application.UserMediatR.Queries;
+namespace People.Identity.Application.UserMediatR.Queries.UserById;
 
 public class UserQueryHandler : IRequestHandler<UserQuery, ErrorOr<UserResult>>
 {

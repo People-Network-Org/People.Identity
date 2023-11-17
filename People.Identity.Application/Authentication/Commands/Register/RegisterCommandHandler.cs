@@ -2,27 +2,22 @@ using ErrorOr;
 
 using MediatR;
 
-using People.Identity.Application.Authentication.Common;
-using People.Identity.Application.Common.Interfaces.Authentication;
 using People.Identity.Application.Common.Interfaces.Persistance;
 using People.Identity.Domain.Common.Errors;
 using People.Identity.Domain.UserAggregate;
-using People.Identity.Domain.UserAggregate.Entities;
 
 namespace People.Identity.Application.Authentication.Commands.Register;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<RegisterResult>>
 {
-  private readonly IJwtTokenGenerator _jwtTokenGenerator;
   private readonly IUserRepository _userRepository;
 
-  public RegisterCommandHandler(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator)
+  public RegisterCommandHandler(IUserRepository userRepository)
   {
     _userRepository = userRepository;
-    _jwtTokenGenerator = jwtTokenGenerator;
   }
 
-  public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
+  public async Task<ErrorOr<RegisterResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -34,16 +29,12 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
       command.LastName,
       command.Email,
       command.Email,
+      false,
       null,
-      command.Password);
+      null);
 
     _userRepository.Add(user);
 
-    var refreshToken = RefreshToken.Create(null, null);
-    user.AddRefreshToken(refreshToken);
-    _userRepository.Update(user);
-
-    var token = _jwtTokenGenerator.GenerateToken(user);
-    return new AuthenticationResult(user, token, refreshToken.Id.Value);
+    return new RegisterResult(user);
   }
 }

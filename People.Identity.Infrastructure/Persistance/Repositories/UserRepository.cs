@@ -39,4 +39,9 @@ public class UserRepository : IUserRepository
   {
     return _dbContext.Users.FirstOrDefault(u => u.Id == id);
   }
+
+  public User? GetByEmailCode(string emailCode)
+  {
+    return _dbContext.Users.FirstOrDefault(u => u.EmailCode! != null! && u.EmailCode.Code == emailCode);
+  }
 }

@@ -14,6 +14,24 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     ConfigureUserRolesTable(builder);
     ConfigureUserClaimsTable(builder);
     ConfigureRefreshTokensTable(builder);
+    ConfigureEmailCodeVO(builder);
+  }
+
+  private void ConfigureEmailCodeVO(EntityTypeBuilder<User> builder)
+  {
+    builder.OwnsOne(u => u.EmailCode, sb =>
+    {
+      sb.HasIndex(ec => ec.Code).IsUnique();
+
+      sb.Property(ec => ec.Code)
+        .IsRequired();
+
+      sb.Property(ec => ec.CreatedDateTime)
+        .IsRequired();
+
+      sb.Property(ec => ec.ExpiredDateTime)
+        .IsRequired();
+    });
   }
 
   private void ConfigureRefreshTokensTable(EntityTypeBuilder<User> builder)
@@ -128,7 +146,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     builder.Property(u => u.Email)
       .IsRequired();
 
-    builder.Property(u => u.PasswordHash)
-      .IsRequired();
+    builder.Property(u => u.IsEmailConfirmed)
+      .IsRequired()
+      .HasDefaultValue(false);
   }
 }
