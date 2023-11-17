@@ -1,4 +1,4 @@
-namespace People.Identity.Infrastructure.Authentication;
+namespace People.Identity.Infrastructure.Auth;
 
 public class JwtSettings
 {

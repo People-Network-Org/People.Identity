@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using People.Identity.Application.Authentication.Commands.Refresh;
 using People.Identity.Application.Authentication.Commands.Register;
 using People.Identity.Application.Authentication.Queries.Login;
-using People.Identity.Application.Common.Interfaces.Persistance;
 using People.Identity.Application.UserMediatR.Queries;
 using People.Identity.Contracts.Authentication;
 using People.Identity.Contracts.User;
@@ -25,7 +24,7 @@ public class AuthenticationController : ApiController
   private readonly ISender _mediator;
   private readonly IMapper _mapper;
 
-  public AuthenticationController(ISender mediator, IMapper mapper, IUserRepository userRepository)
+  public AuthenticationController(ISender mediator, IMapper mapper)
   {
     _mediator = mediator;
     _mapper = mapper;

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
+using People.Identity.Domain.ApiKeyAggregate;
 using People.Identity.Domain.Common.Models;
 using People.Identity.Domain.UserAggregate;
 using People.Identity.Infrastructure.Persistance.Interceptors;
@@ -17,6 +18,7 @@ public class IdentityDbContext : DbContext
   }
 
   public DbSet<User> Users { get; set; } = null!;
+  public DbSet<ApiKey> ApiKeys { get; set; } = null!;
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

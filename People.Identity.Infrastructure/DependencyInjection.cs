@@ -13,12 +13,13 @@ using Microsoft.IdentityModel.Tokens;
 using People.Identity.Application.Common.Interfaces.Authentication;
 using People.Identity.Application.Common.Interfaces.MassTransit;
 using People.Identity.Application.Common.Interfaces.Persistance;
-using People.Identity.Infrastructure.Authentication;
+using People.Identity.Infrastructure.Auth;
 using People.Identity.Infrastructure.MassTransit;
 using People.Identity.Infrastructure.Persistance;
 using People.Identity.Infrastructure.Persistance.Consumers;
 using People.Identity.Infrastructure.Persistance.Interceptors;
 using People.Identity.Infrastructure.Persistance.Repositories;
+using People.Shared.Auth.ApiKey;
 
 namespace People.Identity.Infrastructure;
 
@@ -28,8 +29,8 @@ public static class DependencyInjection
     this IServiceCollection services,
     ConfigurationManager configuration)
   {
-    services.AddAuth(configuration)
-      .AddPersistance(configuration);
+    services.AddPersistance(configuration)
+      .AddAuth(configuration);
 
     return services;
   }
@@ -79,6 +80,7 @@ public static class DependencyInjection
     services.AddScoped<IEventPublisher, EventPublisher>();
     services.AddScoped<PublishDomainEventsInterceptor>();
     services.AddScoped<IUserRepository, UserRepository>();
+    services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
 
     return services;
   }
@@ -92,8 +94,16 @@ public static class DependencyInjection
 
     services.AddSingleton(Options.Create(jwtSettings));
     services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+    services.AddHttpContextAccessor();
+    services.AddApiKeyAuth<ApiKeyValidator>();
 
-    services.AddAuthorization();
+    services.AddAuthorization(options =>
+    {
+      options.AddApiKeyPolicy(policy =>
+      {
+        policy.AddAuthenticationSchemes(new[] { JwtBearerDefaults.AuthenticationScheme });
+      });
+    });
     services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
       {

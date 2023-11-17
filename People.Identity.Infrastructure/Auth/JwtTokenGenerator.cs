@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using People.Identity.Application.Common.Interfaces.Authentication;
 using People.Identity.Domain.UserAggregate;
 
-namespace People.Identity.Infrastructure.Authentication;
+namespace People.Identity.Infrastructure.Auth;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {

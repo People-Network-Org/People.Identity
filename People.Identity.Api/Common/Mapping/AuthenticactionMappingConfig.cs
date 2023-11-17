@@ -1,5 +1,6 @@
 using Mapster;
 
+using People.Identity.Application.Authentication.Commands.DeleteKey;
 using People.Identity.Application.Authentication.Commands.Register;
 using People.Identity.Application.Authentication.Common;
 using People.Identity.Application.Authentication.Queries.Login;
@@ -20,5 +21,10 @@ public class AuthenticationMappingConfig : IRegister
       .Map(dest => dest.RefreshToken, src => src.RefreshToken)
       .Map(dest => dest.Id, src => Guid.Parse(src.User.Id.Value.ToString()))
       .Map(dest => dest, src => src.User);
+
+    config.NewConfig<DeleteApiKeyRequest, DeleteKeyCommand>();
+
+    config.NewConfig<ApiKeyResult, ApiKeyResponse>()
+      .Map(dest => dest.Key, src => src.ApiKey.Key);
   }
 }
