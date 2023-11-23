@@ -2,17 +2,14 @@ using MapsterMapper;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using People.Identity.Application.Authentication.Commands.CreateKey;
 using People.Identity.Application.Authentication.Commands.DeleteKey;
 using People.Identity.Contracts.Authentication;
-using People.Shared.Auth.ApiKey.Attribute;
 
 namespace People.Identity.Api.Controllers;
 
-[Route("keys")]
 public class KeyController : ApiController
 {
   private readonly ISender _mediator;

@@ -9,7 +9,7 @@ using People.Identity.Api.Constants;
 namespace People.Identity.Api.Controllers;
 
 [ApiController]
-[Route("/api")]
+[Route("/api/[controller]")]
 [Authorize]
 public class ApiController : ControllerBase
 {

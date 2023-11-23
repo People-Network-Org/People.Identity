@@ -20,7 +20,6 @@ using People.Identity.Domain.UserAggregate.ValueObjects;
 
 namespace People.Identity.Api.Controllers;
 
-[Route("/auth")]
 public class AuthenticationController : ApiController
 {
   private readonly ISender _mediator;

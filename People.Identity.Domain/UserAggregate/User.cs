@@ -76,7 +76,7 @@ public sealed class User : AggregateRoot<UserId, Guid>
         DateTime.UtcNow,
         DateTime.UtcNow);
 
-    user.AddDomainEvent(new UserCreated(user));
+    // user.AddDomainEvent(new UserCreated(user));
 
     if (!isEmailConfirmed || password is null)
       user.GenerateEmailCode();
@@ -90,6 +90,8 @@ public sealed class User : AggregateRoot<UserId, Guid>
     PasswordHash = passwordHash;
     IsEmailConfirmed = true;
     EmailCode = null;
+
+    AddDomainEvent(new UserCreated(this));
   }
 
   public EmailCode GenerateEmailCode()

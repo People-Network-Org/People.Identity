@@ -1,13 +1,39 @@
 # Authentication
 
-## Login
+## Register
 
-**POST**: /api/auth/login
+**POST**: /api/auth/register
 **Body:**
 
 ```json
 {
+  "firstName": "string",
+  "lastName": "string",
+  "email": "string"
+}
+```
+
+**Result:**
+
+```json
+{
+  "id": "string",
+  "firstName": "string",
+  "lastName": "string | undefined",
+  "nickName": "string",
   "email": "string",
+  "phone": "string | undefined"
+}
+```
+
+## Confirm by code
+
+**POST** /api/auth/confirm
+**Body**:
+
+```json
+{
+  "emailCode": "string",
   "password": "string"
 }
 ```
@@ -27,15 +53,30 @@
 }
 ```
 
-## Register
+## Get user by confirmation code
 
-**POST**: /api/auth/register
+**GET**: /api/auth/confirm/{code:string}
+
+**Result:**
+
+```json
+{
+  "id": "string",
+  "firstName": "string",
+  "lastName": "string | undefined",
+  "nickName": "string",
+  "email": "string",
+  "phone": "string | undefined"
+}
+```
+
+## Login
+
+**POST**: /api/auth/login
 **Body:**
 
 ```json
 {
-  "firstName": "string",
-  "lastName": "string",
   "email": "string",
   "password": "string"
 }
@@ -73,6 +114,23 @@
 {
   "token": "string",
   "refreshToken": "string"
+}
+```
+
+## Me
+
+**GET**: /api/auth/me
+
+**Result:**
+
+```json
+{
+  "id": "string",
+  "firstName": "string",
+  "lastName": "string | undefined",
+  "nickName": "string",
+  "email": "string",
+  "phone": "string | undefined"
 }
 ```
 
