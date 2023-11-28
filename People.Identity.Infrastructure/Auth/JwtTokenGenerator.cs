@@ -23,7 +23,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
   {
     var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret)), SecurityAlgorithms.HmacSha256);
 
-    var claims = new[]
+    var claims = new List<Claim>
     {
       new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
       new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
@@ -31,6 +31,9 @@ public class JwtTokenGenerator : IJwtTokenGenerator
       new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
       new Claim(JwtRegisteredClaimNames.Email, user.Email),
     };
+
+    foreach (var claim in user.Claims)
+      claims.Add(new Claim(claim.Type, claim.Value));
 
     var securityToken = new JwtSecurityToken(
       issuer: _jwtSettings.Issuer,

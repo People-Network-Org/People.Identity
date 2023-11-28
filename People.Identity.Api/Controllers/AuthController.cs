@@ -20,12 +20,12 @@ using People.Identity.Domain.UserAggregate.ValueObjects;
 
 namespace People.Identity.Api.Controllers;
 
-public class AuthenticationController : ApiController
+public class AuthController : ApiController
 {
   private readonly ISender _mediator;
   private readonly IMapper _mapper;
 
-  public AuthenticationController(ISender mediator, IMapper mapper)
+  public AuthController(ISender mediator, IMapper mapper)
   {
     _mediator = mediator;
     _mapper = mapper;
@@ -94,6 +94,12 @@ public class AuthenticationController : ApiController
       result => Ok(_mapper.Map<RefreshResponse>(result)),
       Problem
     );
+  }
+
+  [HttpPost("logout")]
+  public async Task<IActionResult> Logout(RefreshRequest request)
+  {
+    throw new NotImplementedException();
   }
 
   [HttpGet("me")]
