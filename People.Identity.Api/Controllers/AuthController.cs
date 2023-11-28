@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using People.Identity.Application.Authentication.Commands.ConfirmEmail;
 using People.Identity.Application.Authentication.Commands.Refresh;
 using People.Identity.Application.Authentication.Commands.Register;
+using People.Identity.Application.Authentication.Commands.Revoke;
 using People.Identity.Application.Authentication.Queries.Login;
 using People.Identity.Application.UserMediatR.Queries.ConfirmationUser;
 using People.Identity.Application.UserMediatR.Queries.UserById;
@@ -99,7 +100,25 @@ public class AuthController : ApiController
   [HttpPost("logout")]
   public async Task<IActionResult> Logout(RefreshRequest request)
   {
-    throw new NotImplementedException();
+    var idClaim = HttpContext.User.Claims.FirstOrDefault(c =>
+      c.Type == JwtSecurityTokenHandler.DefaultInboundClaimTypeMap[JwtRegisteredClaimNames.Sub]);
+
+    var notFoundProblem = new[] { Errors.User.UserNotFound }.ToList();
+    if (idClaim is null)
+      return Problem(notFoundProblem);
+
+    if (!Guid.TryParse(idClaim.Value, out Guid guid))
+      return Problem(notFoundProblem);
+
+    var userId = UserId.Create(guid);
+    var refreshTokenId = RefreshTokenId.Create(request.RefreshToken);
+    var command = new RevokeCommand(userId, refreshTokenId);
+    var result = await _mediator.Send(command);
+
+    return result.Match(
+      res => Ok(),
+      Problem
+    );
   }
 
   [HttpGet("me")]
@@ -120,7 +139,7 @@ public class AuthController : ApiController
     var authResult = await _mediator.Send(command);
 
     return authResult.Match(
-      result => base.Ok(_mapper.Map<UserResponse>(result)),
+      result => Ok(_mapper.Map<UserResponse>(result)),
       Problem
     );
   }
