@@ -10,5 +10,6 @@ public class ApiKeyMappingConfig : IRegister
   public void Register(TypeAdapterConfig config)
   {
     config.NewConfig<ApiKey, ApiKeyCreatedEvent>();
+    config.NewConfig<ApiKey, ApiKeyDeletedEvent>();
   }
 }
