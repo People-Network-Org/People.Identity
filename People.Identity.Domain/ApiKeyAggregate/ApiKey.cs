@@ -1,3 +1,4 @@
+using People.Identity.Domain.ApiKeyAggregate.Events;
 using People.Identity.Domain.ApiKeyAggregate.ValueObjects;
 using People.Identity.Domain.Common.Models;
 
@@ -25,6 +26,9 @@ public class ApiKey : AggregateRoot<ApiKeyId, Guid>
       ApiKeyId.CreateUnique(),
       key,
       DateTime.UtcNow);
+
+    apiKey.AddDomainEvent(new ApiKeyCreated(apiKey));
+
     return apiKey;
   }
 

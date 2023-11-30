@@ -107,31 +107,37 @@ public sealed class User : AggregateRoot<UserId, Guid>
   public void AddClaim(UserClaim claim)
   {
     _claims.Add(claim);
+    UpdatedDateTime = DateTime.UtcNow;
   }
 
   public void AddRole(UserRole role)
   {
     _roles.Add(role);
+    UpdatedDateTime = DateTime.UtcNow;
   }
 
   public void AddRefreshToken(RefreshToken refreshToken)
   {
     _refreshTokens.Add(refreshToken);
+    UpdatedDateTime = DateTime.UtcNow;
   }
 
   public void RemoveRefreshToken(RefreshToken refreshToken)
   {
     _refreshTokens.Remove(refreshToken);
+    UpdatedDateTime = DateTime.UtcNow;
   }
 
   public void RemoveClaim(UserClaim claim)
   {
     _claims.Remove(claim);
+    UpdatedDateTime = DateTime.UtcNow;
   }
 
   public void RemoveRole(UserRole role)
   {
     _roles.Remove(role);
+    UpdatedDateTime = DateTime.UtcNow;
   }
 
 #pragma warning disable CS8618

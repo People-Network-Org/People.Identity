@@ -28,4 +28,14 @@ public class EventPublisher : IEventPublisher
   {
     await _publishEndpoint.Publish(e);
   }
+
+  public async Task PublishApiKey(ApiKeyCreatedEvent e)
+  {
+    await _publishEndpoint.Publish(e);
+  }
+
+  public async Task PublishApiKey(ApiKeyDeletedEvent e)
+  {
+    await _publishEndpoint.Publish(e);
+  }
 }
