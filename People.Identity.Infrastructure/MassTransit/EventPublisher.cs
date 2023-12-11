@@ -38,4 +38,9 @@ public class EventPublisher : IEventPublisher
   {
     await _publishEndpoint.Publish(e);
   }
+
+  public async Task PublishUser(UserConfirmedEvent e)
+  {
+    await _publishEndpoint.Publish(e);
+  }
 }

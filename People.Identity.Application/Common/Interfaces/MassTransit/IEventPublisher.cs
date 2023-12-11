@@ -7,6 +7,7 @@ public interface IEventPublisher
   Task PublishUser(UserCreatedEvent e);
   Task PublishUser(UserUpdatedEvent e);
   Task PublishUser(UserDeletedEvent e);
+  Task PublishUser(UserConfirmedEvent e);
   Task PublishApiKey(ApiKeyCreatedEvent e);
   Task PublishApiKey(ApiKeyDeletedEvent e);
 }
