@@ -9,7 +9,11 @@ builder.Services
   .AddApplication()
   .AddInfrastructure(builder.Configuration);
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
+app.PrepareInfrastructure();
 
 if (app.Environment.IsDevelopment())
 {

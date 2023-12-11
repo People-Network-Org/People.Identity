@@ -37,7 +37,6 @@ RUN apt-get --yes install curl
 ENV ASPNETCORE_URLS=http://+:5279
 HEALTHCHECK CMD curl --fail http://localhost:5279/healthz || exit
 
-EXPOSE 7212
 EXPOSE 5279
 
 ENTRYPOINT ["dotnet", "People.Identity.Api.dll"]

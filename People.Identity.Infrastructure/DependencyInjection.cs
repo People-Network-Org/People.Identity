@@ -4,6 +4,7 @@ using System.Text;
 using MassTransit;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using People.Identity.Application.Common.Interfaces.Authentication;
 using People.Identity.Application.Common.Interfaces.MassTransit;
 using People.Identity.Application.Common.Interfaces.Persistance;
 using People.Identity.Infrastructure.Auth;
+using People.Identity.Infrastructure.Common.Data;
 using People.Identity.Infrastructure.MassTransit;
 using People.Identity.Infrastructure.Persistance;
 using People.Identity.Infrastructure.Persistance.Consumers;
@@ -117,5 +119,12 @@ public static class DependencyInjection
       });
 
     return services;
+  }
+
+  public static IApplicationBuilder PrepareInfrastructure(this IApplicationBuilder app)
+  {
+    PrepareDB.Prepare(app);
+
+    return app;
   }
 }
