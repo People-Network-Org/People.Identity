@@ -22,6 +22,8 @@ app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHealthChecks("/healthz");
 app.MapControllers();
 
 app.Run();

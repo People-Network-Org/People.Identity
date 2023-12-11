@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <RestoreSources>$(RestoreSources);../../People.Shared/bin/Release;https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\People.Identity.Contracts\People.Identity.Contracts.csproj" />
     <ProjectReference Include="..\People.Identity.Application\People.Identity.Application.csproj" />
