@@ -3,7 +3,8 @@
 ## Register
 
 **POST**: /api/auth/register
-**Body:**
+
+**Body**:
 
 ```json
 {
@@ -13,7 +14,7 @@
 }
 ```
 
-**Result:**
+**Result**:
 
 ```json
 {
@@ -29,6 +30,7 @@
 ## Confirm by code
 
 **POST** /api/auth/confirm
+
 **Body**:
 
 ```json
@@ -38,7 +40,7 @@
 }
 ```
 
-**Result:**
+**Result**:
 
 ```json
 {
@@ -57,7 +59,7 @@
 
 **GET**: /api/auth/confirm/{code:string}
 
-**Result:**
+**Result**:
 
 ```json
 {
@@ -73,7 +75,8 @@
 ## Login
 
 **POST**: /api/auth/login
-**Body:**
+
+**Body**:
 
 ```json
 {
@@ -82,7 +85,7 @@
 }
 ```
 
-**Result:**
+**Result**:
 
 ```json
 {
@@ -100,7 +103,8 @@
 ## Refresh
 
 **POST**: /api/auth/refresh
-**Body:**
+
+**Body**:
 
 ```json
 {
@@ -108,7 +112,7 @@
 }
 ```
 
-**Result:**
+**Result**:
 
 ```json
 {
@@ -117,11 +121,23 @@
 }
 ```
 
+## Logout
+
+**POST**: /api/auth/logout
+
+**Body**:
+
+```json
+{
+  "refreshToken": "string"
+}
+```
+
 ## Me
 
 **GET**: /api/auth/me
 
-**Result:**
+**Result**:
 
 ```json
 {
@@ -131,19 +147,5 @@
   "nickName": "string",
   "email": "string",
   "phone": "string | undefined"
-}
-```
-
-## Errors
-
-Any errors will result:
-
-```json
-{
-  "type": "string",
-  "title": "string",
-  "status": "int",
-  "traceId": "string",
-  "errorCodes": "string[]"
 }
 ```

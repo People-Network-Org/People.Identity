@@ -3,7 +3,8 @@
 ## Create key
 
 **POST**: /api/key
-**Result:**
+
+**Result**:
 
 ```json
 {
@@ -14,7 +15,8 @@
 ## Delete key
 
 **DELETE**: /api/key
-**Body:**
+
+**Body**:
 
 ```json
 {
@@ -22,7 +24,7 @@
 }
 ```
 
-**Result:**
+**Result**:
 
 ```json
 {
