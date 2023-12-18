@@ -7,7 +7,9 @@ using MediatR;
 using People.Identity.Application.UserMediatR.Commands.AddClaim;
 using People.Identity.Application.UserMediatR.Commands.AddRole;
 using People.Identity.Application.UserMediatR.Commands.RemoveClaim;
+using People.Shared.AMQP.Events;
 using People.Shared.AMQP.Tasks;
+using People.Shared.Constants;
 
 namespace People.Identity.Infrastructure.Persistance.Consumers;
 
@@ -15,7 +17,8 @@ public class UserConsumer :
   IConsumer<AddClaimToUser>,
   IConsumer<RemoveClaimFromUser>,
   IConsumer<AddRoleToUser>,
-  IConsumer<RemoveRoleFromUser>
+  IConsumer<RemoveRoleFromUser>,
+  IConsumer<UserOrganizationEvent>
 {
   private readonly IMapper _mapper;
   private readonly ISender _mediator;
@@ -49,4 +52,13 @@ public class UserConsumer :
     var command = _mapper.Map<RemoveRoleFromUser>(context.Message);
     var result = await _mediator.Send(command);
   }
+
+  public async Task Consume(ConsumeContext<UserOrganizationEvent> context)
+  {
+    var orgCommand = new AddClaimCommand(context.Message.UserId, JWTConstants.OrganizationClaimType, context.Message.OrganizationId.ToString());
+    var orgResult = await _mediator.Send(orgCommand);
+    var modifyCommand = new AddClaimCommand(context.Message.UserId, JWTConstants.ModifyOrganizationClaimType, context.Message.CanModify.ToString());
+    var modifyResult = await _mediator.Send(modifyCommand);
+  }
+
 }

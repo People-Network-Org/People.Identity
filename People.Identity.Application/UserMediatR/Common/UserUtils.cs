@@ -19,6 +19,12 @@ public static class UserUtils
       c.Value == value);
   }
 
+  public static UserClaim? GetUserClaim(User user, string type)
+  {
+    return user.Claims.FirstOrDefault(c =>
+      c.Type == type);
+  }
+
   public static User? GetUserById(Guid id, IUserRepository userRepository)
   {
     return userRepository.GetById(UserId.Create(id));

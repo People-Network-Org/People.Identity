@@ -3,12 +3,11 @@ using People.Identity.Domain.UserAggregate.ValueObjects;
 
 namespace People.Identity.Application.Common.Interfaces.Persistance;
 
-public interface IUserRepository
+public interface IUserRepository : IRepository<User>
 {
   User? GetById(UserId id);
   User? GetByEmailCode(string emailCode);
   User? GetUserByEmail(string email);
   User? GetUserByRefreshToken(string refreshToken);
-  void Add(User user);
-  void Update(User user);
+  ICollection<User> GetAllByIds(ICollection<UserId> userIds);
 }

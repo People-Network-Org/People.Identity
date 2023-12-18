@@ -26,8 +26,10 @@ public class AddClaimCommandHandler : IRequestHandler<AddClaimCommand, ErrorOr<U
     if (UserUtils.GetUserById(request.UserId, _userRepository) is not User user)
       return Errors.User.UserNotFound;
 
-    if (UserUtils.GetUserClaim(user, request.Type, request.Value) is not null)
-      return Errors.User.UserAlreadyHasClaim;
+    if (UserUtils.GetUserClaim(user, request.Type) is UserClaim userClaim)
+    {
+      user.RemoveClaim(userClaim);
+    }
 
     var claim = UserClaim.Create(request.Type, request.Value);
     user.AddClaim(claim);

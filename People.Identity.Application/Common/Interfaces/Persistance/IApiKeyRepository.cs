@@ -3,11 +3,8 @@ using People.Identity.Domain.ApiKeyAggregate.ValueObjects;
 
 namespace People.Identity.Application.Common.Interfaces.Persistance;
 
-public interface IApiKeyRepository
+public interface IApiKeyRepository : IRepository<ApiKey>
 {
   ApiKey? GetById(ApiKeyId id);
   ApiKey? GetByKey(string key);
-  void Add(ApiKey apiKey);
-  void Update(ApiKey apiKey);
-  void Delete(ApiKey apiKey);
 }

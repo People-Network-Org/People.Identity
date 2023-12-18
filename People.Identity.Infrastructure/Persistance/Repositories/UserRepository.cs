@@ -4,25 +4,10 @@ using People.Identity.Domain.UserAggregate.ValueObjects;
 
 namespace People.Identity.Infrastructure.Persistance.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository : Repository<User>, IUserRepository
 {
-  private readonly IdentityDbContext _dbContext;
-
-  public UserRepository(IdentityDbContext dbContext)
+  public UserRepository(IdentityDbContext dbContext) : base(dbContext)
   {
-    _dbContext = dbContext;
-  }
-
-  public void Add(User user)
-  {
-    _dbContext.Add(user);
-    _dbContext.SaveChanges();
-  }
-
-  public void Update(User user)
-  {
-    _dbContext.Update(user);
-    _dbContext.SaveChanges();
   }
 
   public User? GetUserByEmail(string email)
@@ -44,4 +29,10 @@ public class UserRepository : IUserRepository
   {
     return _dbContext.Users.FirstOrDefault(u => u.EmailCode! != null! && u.EmailCode.Code == emailCode);
   }
+
+  public ICollection<User> GetAllByIds(ICollection<UserId> userIds)
+  {
+    return _dbContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
+  }
+
 }

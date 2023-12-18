@@ -22,11 +22,13 @@ public class IdentityDbContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    base.OnModelCreating(modelBuilder);
+
     modelBuilder
       .Ignore<List<IDomainEvent>>()
       .ApplyConfigurationsFromAssembly(typeof(IdentityDbContext).Assembly);
 
-    base.OnModelCreating(modelBuilder);
+    modelBuilder.HasDefaultSchema("identity");
   }
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
