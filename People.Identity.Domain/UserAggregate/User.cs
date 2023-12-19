@@ -90,6 +90,7 @@ public sealed class User : AggregateRoot<UserId, Guid>
     PasswordHash = passwordHash;
     IsEmailConfirmed = true;
     EmailCode = null;
+    UpdatedDateTime = DateTime.UtcNow;
 
     AddDomainEvent(new UserConfirmed(this));
   }
@@ -101,7 +102,17 @@ public sealed class User : AggregateRoot<UserId, Guid>
       DateTime.UtcNow,
       DateTime.UtcNow.AddDays(DaysEmailCodeExpired));
 
+    UpdatedDateTime = DateTime.UtcNow;
+
     return EmailCode;
+  }
+
+  public void ChangePassword(string password)
+  {
+    var passwordHash = password is null ? null : new PasswordHasher<User>().HashPassword(null!, password);
+    PasswordHash = passwordHash;
+    _refreshTokens.Clear();
+    UpdatedDateTime = DateTime.UtcNow;
   }
 
   public void AddClaim(UserClaim claim)

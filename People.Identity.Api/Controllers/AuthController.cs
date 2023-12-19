@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using People.Identity.Application.Authentication.Commands.ChangePassword;
 using People.Identity.Application.Authentication.Commands.ConfirmEmail;
 using People.Identity.Application.Authentication.Commands.Refresh;
 using People.Identity.Application.Authentication.Commands.Register;
@@ -117,6 +118,29 @@ public class AuthController : ApiController
 
     return result.Match(
       res => Ok(),
+      Problem
+    );
+  }
+
+  [HttpPut("password")]
+  public async Task<IActionResult> ChangePassword([FromBody] PasswordRequest request)
+  {
+    var idClaim = HttpContext.User.Claims.FirstOrDefault(c =>
+      c.Type == JwtSecurityTokenHandler.DefaultInboundClaimTypeMap[JwtRegisteredClaimNames.Sub]);
+
+    var notFoundProblem = new[] { Errors.User.UserNotFound }.ToList();
+    if (idClaim is null)
+      return Problem(notFoundProblem);
+
+    if (!Guid.TryParse(idClaim.Value, out Guid guid))
+      return Problem(notFoundProblem);
+
+    var userId = UserId.Create(guid);
+    var command = new ChangePasswordCommand(userId, request.Password);
+    var authResult = await _mediator.Send(command);
+
+    return authResult.Match(
+      result => Ok(_mapper.Map<AuthenticationResponse>(result)),
       Problem
     );
   }
