@@ -5,7 +5,6 @@ using MediatR;
 using People.Identity.Application.Authentication.Common;
 using People.Identity.Application.Common.Interfaces.Authentication;
 using People.Identity.Application.Common.Interfaces.Persistance;
-using People.Identity.Application.UserMediatR.Common;
 using People.Identity.Domain.Common.Errors;
 using People.Identity.Domain.UserAggregate;
 using People.Identity.Domain.UserAggregate.Entities;
