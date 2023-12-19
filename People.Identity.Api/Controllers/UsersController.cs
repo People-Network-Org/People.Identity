@@ -4,9 +4,11 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
+using People.Identity.Application.UserMediatR.Commands.Delete;
 using People.Identity.Application.UserMediatR.Queries.Collection;
 using People.Identity.Contracts.Common;
 using People.Identity.Contracts.User;
+using People.Identity.Domain.UserAggregate.ValueObjects;
 using People.Shared.Constants;
 
 namespace People.Identity.Api.Controllers;
@@ -35,6 +37,25 @@ public class UsersController : ApiController
       result => Ok(modifyClaim is not null && bool.Parse(modifyClaim.Value) ?
         _mapper.Map<CollectionResponse<UserAdminResponse>>(result) :
         _mapper.Map<CollectionResponse<UserResponse>>(result)),
+      Problem
+    );
+  }
+
+  [HttpDelete("{id:Guid}")]
+  public async Task<IActionResult> Delete(Guid id)
+  {
+    var modifyClaim = HttpContext.User.Claims.FirstOrDefault(c =>
+      c.Type == JWTConstants.ModifyOrganizationClaimType);
+
+    if (modifyClaim is null || !bool.Parse(modifyClaim.Value))
+      return Forbid();
+
+    var userId = UserId.Create(id);
+    var command = new DeleteCommand(userId);
+    var result = await _mediator.Send(command);
+
+    return result.Match(
+      result => Ok(_mapper.Map<UserResponse>(result)),
       Problem
     );
   }
