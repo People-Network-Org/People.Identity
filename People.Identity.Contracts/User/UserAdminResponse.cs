@@ -8,5 +8,5 @@ public record UserAdminResponse(
   string Email,
   string? Phone,
   bool IsConfirmed,
-  string EmailCode
+  string? EmailCode
 );

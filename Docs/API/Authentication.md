@@ -149,3 +149,30 @@
   "phone": "string | undefined"
 }
 ```
+
+## Change password
+
+**PUT**:/api/auth/password
+
+**Body**:
+
+```json
+{
+  "password": "string"
+}
+```
+
+**Result**:
+
+```json
+{
+  "id": "string",
+  "firstName": "string",
+  "lastName": "string | undefined",
+  "nickName": "string",
+  "email": "string",
+  "phone": "string | undefined",
+  "token": "string",
+  "refreshToken": "string"
+}
+```
