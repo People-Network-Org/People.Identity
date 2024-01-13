@@ -32,7 +32,10 @@ public class UserRepository : Repository<User>, IUserRepository
 
   public ICollection<User> GetAllByIds(ICollection<UserId> userIds)
   {
-    return _dbContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
+    return _dbContext.Users
+      .Where(u => userIds.Contains(u.Id))
+      .OrderBy(u => u.CreatedDateTime)
+      .ToList();
   }
 
 }
