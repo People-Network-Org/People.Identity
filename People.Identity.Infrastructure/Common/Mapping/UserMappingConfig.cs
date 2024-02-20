@@ -1,7 +1,9 @@
 using Mapster;
 
+using People.Identity.Application.Authentication.Commands.Register;
 using People.Identity.Application.UserMediatR.Commands.AddClaim;
 using People.Identity.Application.UserMediatR.Commands.AddRole;
+using People.Identity.Application.UserMediatR.Commands.Delete;
 using People.Identity.Application.UserMediatR.Commands.RemoveClaim;
 using People.Identity.Application.UserMediatR.Commands.RemoveRole;
 using People.Shared.AMQP.Tasks;
@@ -23,5 +25,10 @@ public class UserMappingConfig : IRegister
 
     config.NewConfig<RemoveRoleFromUser, RemoveRoleCommand>()
       .Map(dest => dest.UserId, src => src.Id);
+
+    config.NewConfig<CreateUser, RegisterCommand>();
+
+    config.NewConfig<DeleteUser, DeleteCommand>()
+      .Map(dest => dest.UserId, src => src.Guid);
   }
 }

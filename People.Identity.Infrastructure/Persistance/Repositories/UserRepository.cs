@@ -38,4 +38,8 @@ public class UserRepository : Repository<User>, IUserRepository
       .ToList();
   }
 
+  public User? GetUserByNickName(string nickName)
+  {
+    return _dbContext.Users.FirstOrDefault(u => u.NickName == nickName);
+  }
 }

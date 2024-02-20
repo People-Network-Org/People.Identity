@@ -21,13 +21,16 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<R
   {
     await Task.CompletedTask;
 
-    if (_userRepository.GetUserByEmail(command.Email) is not null)
+    if (_userRepository.GetUserByNickName(command.NickName) is not null)
+      return Errors.User.DuplicateNickName;
+
+    if (command.Email != null && _userRepository.GetUserByEmail(command.Email) is not null)
       return Errors.User.DuplicateEmail;
 
     var user = User.Create(
       command.FirstName,
       command.LastName,
-      command.Email,
+      command.NickName,
       command.Email,
       false,
       null,

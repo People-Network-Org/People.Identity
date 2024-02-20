@@ -4,8 +4,10 @@ using MassTransit;
 
 using MediatR;
 
+using People.Identity.Application.Authentication.Commands.Register;
 using People.Identity.Application.UserMediatR.Commands.AddClaim;
 using People.Identity.Application.UserMediatR.Commands.AddRole;
+using People.Identity.Application.UserMediatR.Commands.Delete;
 using People.Identity.Application.UserMediatR.Commands.RemoveClaim;
 using People.Shared.AMQP.Events;
 using People.Shared.AMQP.Tasks;
@@ -18,7 +20,9 @@ public class UserConsumer :
   IConsumer<RemoveClaimFromUser>,
   IConsumer<AddRoleToUser>,
   IConsumer<RemoveRoleFromUser>,
-  IConsumer<UserOrganizationEvent>
+  IConsumer<UserOrganizationEvent>,
+  IConsumer<CreateUser>,
+  IConsumer<DeleteUser>
 {
   private readonly IMapper _mapper;
   private readonly ISender _mediator;
@@ -61,4 +65,15 @@ public class UserConsumer :
     var modifyResult = await _mediator.Send(modifyCommand);
   }
 
+  public async Task Consume(ConsumeContext<CreateUser> context)
+  {
+    var command = _mapper.Map<RegisterCommand>(context.Message);
+    var result = await _mediator.Send(command);
+  }
+
+  public async Task Consume(ConsumeContext<DeleteUser> context)
+  {
+    var command = _mapper.Map<DeleteCommand>(context.Message);
+    var result = await _mediator.Send(command);
+  }
 }

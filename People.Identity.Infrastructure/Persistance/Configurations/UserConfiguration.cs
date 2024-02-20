@@ -143,9 +143,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
       .IsRequired()
       .HasMaxLength(100);
 
-    builder.Property(u => u.Email)
-      .IsRequired();
-
     builder.Property(u => u.IsEmailConfirmed)
       .IsRequired()
       .HasDefaultValue(false);

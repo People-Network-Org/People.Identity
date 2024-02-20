@@ -18,7 +18,7 @@ public sealed class User : AggregateRoot<UserId, Guid>
   public string FirstName { get; private set; }
   public string LastName { get; private set; }
   public string NickName { get; private set; }
-  public string Email { get; private set; }
+  public string? Email { get; private set; }
   public bool IsEmailConfirmed { get; private set; }
   public string? Phone { get; private set; }
   public string? PasswordHash { get; private set; }
@@ -36,7 +36,7 @@ public sealed class User : AggregateRoot<UserId, Guid>
       string firstName,
       string lastName,
       string nickName,
-      string email,
+      string? email,
       bool isEmailConfirmed,
       string? phone,
       string? passwordHash,
@@ -58,7 +58,7 @@ public sealed class User : AggregateRoot<UserId, Guid>
       string firstName,
       string lastName,
       string nickName,
-      string email,
+      string? email,
       bool isEmailConfirmed,
       string? phone,
       string? password)
