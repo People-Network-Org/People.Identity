@@ -24,6 +24,9 @@ public class UsersController : ApiController
     _mapper = mapper;
   }
 
+  /// <summary>
+  /// Получить информацию о списке пользователей по их id
+  /// </summary>
   [HttpGet("collection")]
   public async Task<IActionResult> Collection([FromQuery] ICollection<Guid> ids)
   {
@@ -41,6 +44,9 @@ public class UsersController : ApiController
     );
   }
 
+  /// <summary>
+  /// Удалить пользователя
+  /// </summary>
   [HttpDelete("{id:Guid}")]
   public async Task<IActionResult> Delete(Guid id)
   {

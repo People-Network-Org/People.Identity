@@ -21,6 +21,7 @@ public class KeyController : ApiController
     _mapper = mapper;
   }
 
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPost]
   public async Task<IActionResult> Create()
   {
@@ -33,6 +34,7 @@ public class KeyController : ApiController
     );
   }
 
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpDelete]
   public async Task<IActionResult> Delete(DeleteApiKeyRequest request)
   {

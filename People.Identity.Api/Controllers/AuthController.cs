@@ -33,6 +33,11 @@ public class AuthController : ApiController
     _mapper = mapper;
   }
 
+  /// <summary>
+  /// Получить пользователя по коду подтверждения
+  /// </summary>
+  /// <param name="code">Код подтверждения</param>
+  /// <returns>Информация о пользователе</returns>
   [HttpGet("confirm/{code}")]
   [AllowAnonymous]
   public async Task<IActionResult> GetConfirmationUser(string code)
@@ -46,6 +51,9 @@ public class AuthController : ApiController
     );
   }
 
+  /// <summary>
+  /// Подтвердить регистрацию пользователя по коду
+  /// </summary>
   [HttpPost("confirm")]
   [AllowAnonymous]
   public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest request)
@@ -59,6 +67,9 @@ public class AuthController : ApiController
     );
   }
 
+  /// <summary>
+  /// Зарегистрировать пользователя
+  /// </summary>
   [HttpPost("register")]
   [AllowAnonymous]
   public async Task<IActionResult> Register(RegisterRequest request)
@@ -72,6 +83,9 @@ public class AuthController : ApiController
     );
   }
 
+  /// <summary>
+  /// Авторизовать пользователя
+  /// </summary>
   [HttpPost("login")]
   [AllowAnonymous]
   public async Task<IActionResult> Login(LoginRequest request)
@@ -85,6 +99,9 @@ public class AuthController : ApiController
     );
   }
 
+  /// <summary>
+  /// Обновить JWT по Refresh Token
+  /// </summary>
   [HttpPost("refresh")]
   [AllowAnonymous]
   public async Task<IActionResult> Refresh(RefreshRequest request)
@@ -98,6 +115,9 @@ public class AuthController : ApiController
     );
   }
 
+  /// <summary>
+  /// Выход пользователя из системы
+  /// </summary>
   [HttpPost("logout")]
   public async Task<IActionResult> Logout(RefreshRequest request)
   {
@@ -122,6 +142,9 @@ public class AuthController : ApiController
     );
   }
 
+  /// <summary>
+  /// Изменить пароль пользователя
+  /// </summary>
   [HttpPut("password")]
   public async Task<IActionResult> ChangePassword([FromBody] PasswordRequest request)
   {
@@ -145,6 +168,9 @@ public class AuthController : ApiController
     );
   }
 
+  /// <summary>
+  /// Получить информацию об авторизованном пользователе
+  /// </summary>
   [HttpGet("me")]
   public async Task<IActionResult> Me()
   {

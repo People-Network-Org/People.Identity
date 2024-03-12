@@ -1,3 +1,5 @@
+using System.Reflection;
+
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 using People.Identity.Api.Common.Errors;
@@ -17,7 +19,11 @@ public static class DependencyInjection
     services.AddMappings();
 
     services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen();
+    services.AddSwaggerGen(options =>
+    {
+      var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+      options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    });
 
     return services;
   }
